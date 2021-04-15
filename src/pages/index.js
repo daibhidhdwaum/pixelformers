@@ -1,5 +1,6 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import Layout from "../components/Layout"
 
 export default function Home() {
   const data = useStaticQuery(graphql`
@@ -16,12 +17,11 @@ export default function Home() {
 
   const { edges } = data.allContentfulSeries
 
+  console.log(edges)
+
   return (
-    <div>
-      {edges.map((edge, i) => {
-        const { series } = edge.node
-        return <div key={i}>{series}</div>
-      })}
-    </div>
+    <Layout>
+      <h2>This is Pixelformers homepage</h2>
+    </Layout>
   )
 }
