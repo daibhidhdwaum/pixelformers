@@ -1,6 +1,6 @@
 import React from "react"
 import Layout from "../components/Layout"
-import { graphql, useStaticQuery } from "gatsby"
+import { Link, graphql, useStaticQuery } from "gatsby"
 
 const Series = () => {
   const data = useStaticQuery(graphql`
@@ -9,6 +9,7 @@ const Series = () => {
         edges {
           node {
             series
+            slug
           }
         }
       }
@@ -20,13 +21,17 @@ const Series = () => {
     <Layout>
       <section>
         <h2>Series</h2>
-        <div>
+        <ul>
           {edges.map((edge, i) => {
-            const { series } = edge.node
+            const { series, slug } = edge.node
 
-            return <h3 key={i}>{series}</h3>
+            return (
+              <Link to={`/series/${slug}`}>
+                <h3 key={i}>{series}</h3>
+              </Link>
+            )
           })}
-        </div>
+        </ul>
       </section>
     </Layout>
   )
