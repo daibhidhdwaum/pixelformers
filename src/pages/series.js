@@ -3,12 +3,13 @@ import Layout from "../components/Layout"
 import { Link, graphql, useStaticQuery } from "gatsby"
 
 const Series = () => {
+  // Grab the each series name and the corresponding slug
   const data = useStaticQuery(graphql`
     query {
       allContentfulSeries {
         edges {
           node {
-            series
+            seriesName
             slug
           }
         }
@@ -17,22 +18,21 @@ const Series = () => {
   `)
 
   const { edges } = data.allContentfulSeries
+
   return (
     <Layout>
-      <section>
-        <h2>Series</h2>
-        <ul>
-          {edges.map((edge, i) => {
-            const { series, slug } = edge.node
+      <h2>Series</h2>
+      <ul>
+        {edges.map((edge, i) => {
+          const { seriesName, slug } = edge.node
 
-            return (
-              <Link to={`/series/${slug}`}>
-                <h3 key={i}>{series}</h3>
-              </Link>
-            )
-          })}
-        </ul>
-      </section>
+          return (
+            <Link to={`/series/${slug}`}>
+              <h3 key={i}>{seriesName}</h3>
+            </Link>
+          )
+        })}
+      </ul>
     </Layout>
   )
 }
