@@ -4,7 +4,9 @@ module.exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
   // 1. Get path to template
-  const seriesTemplate = path.resolve("./src/templates/SeriesTemplate.js")
+  const singleSeriesTemplate = path.resolve(
+    "./src/templates/SingleSeriesTemplate.js"
+  )
 
   // This graphql function returns a promise
   const seriesRes = await graphql(`
@@ -18,15 +20,12 @@ module.exports.createPages = async ({ graphql, actions }) => {
       }
     }
   `)
-  // console.log("###############")
-  // console.log(seriesRes)
-  // console.log("###############")
 
   // This loops over each series
   seriesRes.data.allContentfulSeries.nodes.forEach(node => {
     const { slug } = node
     createPage({
-      component: seriesTemplate,
+      component: singleSeriesTemplate,
       path: `/series/${slug}`,
       context: {
         slug: slug,

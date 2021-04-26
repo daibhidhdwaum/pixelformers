@@ -1,10 +1,11 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
 import Layout from "../components/Layout.js"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const SeriesTemplate = ({ data }) => {
   console.log(data)
-  const { seriesReference, seriesName } = data.contentfulSeries
+  const { seriesReference, seriesName, image } = data.contentfulSeries
   return (
     <Layout>
       <h3>{seriesName}</h3>
@@ -13,10 +14,15 @@ const SeriesTemplate = ({ data }) => {
           <p>There are currently no Sprites in this collection</p>
         ) : (
           seriesReference.map(sprite => {
-            const { spriteName, id, faction, primaryFunction } = sprite
+            const { spriteName, id, faction, primaryFunction, image } = sprite
+
+            const pathToImage = getImage(image)
+
+            console.log(pathToImage)
 
             return (
               <li key={id}>
+                <GatsbyImage image={pathToImage} alt={spriteName} />
                 <h4>{spriteName}</h4>
                 <p>{faction}</p>
                 <p>{primaryFunction}</p>
@@ -43,6 +49,9 @@ export const query = graphql`
           spriteName
           faction
           primaryFunction
+        }
+        image {
+          gatsbyImageData
         }
       }
       seriesName
