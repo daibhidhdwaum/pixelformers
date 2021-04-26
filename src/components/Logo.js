@@ -5,7 +5,7 @@ const Logo = () => {
   return (
     <div>
       <StaticImage
-        src="../images/pixel-logo.gif"
+        src="../images/pixel-logo.png"
         alt="logo"
         placeholder="blurred"
         layout="fixed"
