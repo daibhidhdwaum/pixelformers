@@ -7,6 +7,18 @@
 module.exports = {
   /* Your site config here */
   plugins: [
+    "gatsby-plugin-image",
+    "gatsby-plugin-sharp",
+    "gatsby-transformer-sharp",
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "source",
+        path: `${__dirname}/src/`,
+      },
+    },
+    "@contentful/rich-text-react-renderer",
+    "@contentful/rich-text-types",
     {
       resolve: "gatsby-source-contentful",
       options: {

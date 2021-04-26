@@ -10,29 +10,39 @@ module.exports.createPages = async ({ graphql, actions }) => {
   const seriesRes = await graphql(`
     query {
       allContentfulSeries {
-        edges {
-          node {
-            seriesReference {
-              ... on ContentfulSprite {
-                id
-                spriteName
-                contentful_id
-                faction
-                primaryFunction
-                slug
-              }
+        nodes {
+          seriesReference {
+            ... on ContentfulSprite {
+              id
+              spriteName
+              contentful_id
+              faction
+              primaryFunction
+              slug
             }
-            seriesName
-            slug
+          }
+          id
+          seriesName
+          slug
+          seriesImage {
+            gatsbyImageData
           }
         }
       }
     }
   `)
+  console.log("###############")
+  console.log(seriesRes)
+  console.log("nodes", seriesRes.data.allContentfulSeries.nodes)
+  console.log(
+    "reference",
+    seriesRes.data.allContentfulSeries.nodes.seriesReference
+  )
+  console.log("###############")
 
   // This loops over each series
-  seriesRes.data.allContentfulSeries.edges.forEach(edge => {
-    const { slug } = edge.node
+  seriesRes.data.allContentfulSeries.nodes.forEach(node => {
+    const { slug } = node
     createPage({
       component: seriesTemplate,
       path: `/series/${slug}`,

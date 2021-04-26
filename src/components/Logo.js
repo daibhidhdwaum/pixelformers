@@ -1,10 +1,15 @@
 import React from "react"
-import logo from "../images/pixel-logo.gif"
+import { StaticImage } from "gatsby-plugin-image"
 
 const Logo = () => {
   return (
     <div>
-      <img src={logo} alt="logo" />
+      <StaticImage
+        src="../images/pixel-logo.gif"
+        alt="logo"
+        placeholder="blurred"
+        layout="fixed"
+      />
     </div>
   )
 }
