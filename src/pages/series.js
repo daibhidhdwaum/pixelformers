@@ -29,12 +29,13 @@ const Series = () => {
         {nodes.map(node => {
           const { seriesImage, seriesName, slug, id } = node
           const pathToImage = getImage(seriesImage)
-
           return (
-            <Link to={`/series/${slug}`} key={id}>
-              <GatsbyImage image={pathToImage} alt={seriesName} />
-              <p>{seriesName}</p>
-            </Link>
+            <div>
+              <Link to={`/series/${slug}`} key={id}>
+                <GatsbyImage image={pathToImage} alt={seriesName} />
+                <p>{seriesName}</p>
+              </Link>
+            </div>
           )
         })}
       </ul>
