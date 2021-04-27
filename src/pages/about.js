@@ -1,37 +1,41 @@
 import React from "react"
 import Layout from "../components/Layout"
 import { useStaticQuery, graphql } from "gatsby"
-// import { BLOCKS, MARKS } from "@contentful/rich-text-types"
-// import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const About = () => {
   const data = useStaticQuery(graphql`
     query {
-      allContentfulAbout {
-        nodes {
-          bio {
-            raw
-          }
-          about
+      contentfulAbout {
+        about
+        bio {
+          bio
+        }
+        bioImage {
+          gatsbyImageData
+          title
         }
       }
     }
   `)
 
-  // const Text = ({ children }) => <p>{children}</p>
+  const {
+    bio: { bio },
+    about,
+    bioImage,
+  } = data.contentfulAbout
 
-  // const options = {
-  //   rendernode: {
-  //     [BLOCKS.PARAGRAPH]: (nodes, children) => <Text>{children}</Text>,
-  //   },
-  // }
+  const image = getImage(bioImage)
 
-  // const bio = data.allContentfulAbout.node
-  // const { nodes } = data.allContentfulAbout
-  // console.log(data)
-  // console.log(nodes)
-
-  return <Layout>{/* {documentToReactComponents(node.bio, options)} */}</Layout>
+  return (
+    <Layout>
+      <h2>{about}</h2>
+      <div>{bio}</div>
+      <div>
+        <GatsbyImage image={image} alt={bioImage.title} />
+      </div>
+    </Layout>
+  )
 }
 
 export default About
