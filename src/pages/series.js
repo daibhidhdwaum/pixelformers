@@ -2,6 +2,7 @@ import React from "react"
 import Layout from "../components/Layout"
 import { Link, graphql, useStaticQuery } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import Head from "../components/Head"
 
 const Series = () => {
   // Grab the each series name and the corresponding slug
@@ -24,6 +25,7 @@ const Series = () => {
 
   return (
     <Layout>
+      <Head title={"Series"} />
       <h2>Series</h2>
       <ul>
         {nodes.map(node => {

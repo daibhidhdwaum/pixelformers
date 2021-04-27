@@ -5,8 +5,13 @@
  */
 
 module.exports = {
+  siteMetadata: {
+    title: "Pixelformers",
+    lang: "en",
+  },
   /* Your site config here */
   plugins: [
+    "gatsby-plugin-react-helmet",
     "gatsby-plugin-image",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",

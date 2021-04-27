@@ -2,6 +2,7 @@ import React from "react"
 import Layout from "../components/Layout"
 import { useStaticQuery, graphql } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import Head from "../components/Head"
 
 const About = () => {
   const data = useStaticQuery(graphql`
@@ -29,6 +30,7 @@ const About = () => {
 
   return (
     <Layout>
+      <Head title={"About"} />
       <h2>{about}</h2>
       <div>{bio}</div>
       <div>

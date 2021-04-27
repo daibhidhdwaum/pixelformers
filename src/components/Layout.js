@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     <div>
       <div>
         <Header />
-        {children}
+        <main>{children}</main>
       </div>
       <Footer />
     </div>
