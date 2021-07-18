@@ -1,0 +1,17 @@
+@import "../../styles/variables.module";
+
+.hamburger {
+  width: 5rem;
+  height: 5rem;
+  @include flex(auto, center, center);
+  &__icon {
+    color: white;
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+}

@@ -1,0 +1,9 @@
+@import "../../styles/variables.module";
+
+.layout {
+  @include flex(column, auto, auto);
+  min-height: 100vh;
+  &__container {
+    flex-grow: 1;
+  }
+}
