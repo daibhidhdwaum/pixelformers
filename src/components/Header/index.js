@@ -17,11 +17,9 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.header__wrapper}>
         <div className={styles.header__container}>
-          {/* <div className={styles.header__navContainer}> */}
           <div className={styles.header__logoContainer}>
             <Logo />
           </div>
-          {/* </div> */}
           <ul
             className={`${styles.header__navbar} ${
               !isOpen ? styles.header__isClosed : styles.header__isOpen
