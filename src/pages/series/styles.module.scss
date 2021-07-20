@@ -1,4 +1,59 @@
-.series {
-  border: 1px solid red;
-  margin: 2rem;
+@import "../../styles/variables.module";
+
+.seriesSection {
+  &__wrapper {
+    @include wrapper(95%, 1000px);
+  }
+  &__title {
+    font-size: 4rem;
+    text-transform: uppercase;
+  }
+  &__container {
+    padding: 4rem 0;
+  }
+  &__series {
+    max-width: 45rem;
+    margin: 0 auto;
+    padding: 5rem 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  &__link {
+    @include flex(column, center, center);
+    text-align: center;
+    background-color: $dustyLight;
+    border-radius: 0.5rem;
+  }
+  &__image {
+    width: 100%;
+  }
+  &__text {
+    background-color: $white;
+    width: calc(100% - 2px);
+    border: 1px solid $dustyDark;
+    p {
+      text-align: center;
+      font-size: 2rem;
+      padding: 3rem;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .seriesSection {
+    &__series {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 100%;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .seriesSection {
+    &__series {
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 100%;
+    }
+  }
 }

@@ -58,14 +58,15 @@
     &__navbar {
       @include flex(row, space-between, center);
       max-width: 50%;
-      border: 1px solid red;
       position: static;
-
       z-index: 0;
       background-color: transparent;
     }
     &__navbarItem {
       border: none;
+      a {
+        width: 10rem;
+      }
       &:first-child {
         border: none;
       }
