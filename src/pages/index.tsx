@@ -1,11 +1,16 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import { createClient } from 'contentful';
+import Layout from '@/components/Layout/Layout'
+import AllSeries from '@/components/AllSeries/AllSeries';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({ about, series }) {
+  console.log('series :>> ', series);
   return (
     <>
       <Head>
@@ -14,8 +19,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
+
+      <Layout>
+        <AllSeries series={series} />
+ 
+        {/* <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code>
@@ -116,8 +124,27 @@ export default function Home() {
               with&nbsp;Vercel.
             </p>
           </a>
-        </div>
-      </main>
+        </div> */}
+      </Layout>
     </>
-  )
+  );
 }
+
+export const getStaticProps = async () => {
+  const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  });
+
+  const about = await client.getEntries({ content_type: 'about' });
+  const series = await client.getEntries({ content_type: 'series' });
+  // const sprites = await client.getEntries({ content_type: "sprites" });
+
+  return {
+    props: {
+      about: about,
+      series: series,
+      // sprites: sprites
+    },
+  };
+};
