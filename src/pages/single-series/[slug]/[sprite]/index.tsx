@@ -19,20 +19,22 @@ const Sprite = () => {
 export default Sprite;
 
 export const getStaticPaths = async () => {
-
   const spriteRes = await client.getEntries({
     content_type: 'sprite',
   });
 
+
   const paths = spriteRes?.items?.map(sprite => {
-    console.log('sprite', sprite)
     return {
-      params: { sprite: sprite?.fields?.slug },
+      params: {
+        slug: sprite?.fields?.associatedSeriesSlug,
+        sprite: sprite?.fields?.slug,
+      },
     };
   });
 
   return {
-    paths,
+    paths: [],
     fallback: false,
   };
 };
@@ -41,12 +43,13 @@ export const getStaticProps = async ({params}) => {
 
   const { items } = await client.getEntries({
     content_type: 'sprite',
-    'fields.slug': params.slug,
+    'fields.sprite': params.sprite,
   });
 
 
- 
   return {
-    props: {   sprite: items[0] },
+    props: {   
+      sprite: items[0]
+    },
   };
 };
