@@ -1,38 +1,86 @@
-import React from 'react'
-import { createClient } from 'contentful';
-import Layout from '@/components/Layout/Layout';
+// |-- Built-in Dependencies --|
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+
+// |-- Internal Dependencies --|
+import Layout from '@/components/Layout/Layout';
+
+// |-- Internal Dependencies --|
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+
+// |-- Contentful --|
+import { createClient } from 'contentful';
+
+// |-- Types --|
+interface IParams {
+  params: {
+    sprite: string;
+  };
+}
+
+// TODO: Move this to api folder so it can be used in multiple files
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-const Sprite = ({sprite}) => {
+// TODO: In the getStaticProps function, you are returning the sprite object as a prop, but you should only return the necessary fields that your component requires. This will help reduce the amount of data sent to the client, improving performance. For example, if your Sprite component only requires the title and image fields of the sprite, you can modify the getStaticProps function as follows:
 
-  const {
-    spriteName,
-    faction,
-    moto,
-    primaryFunction,
-    altMode,
+// export const getStaticProps = async ({ params }) => {
+//   const { items } = await client.getEntries({
+//     content_type: 'sprite',
+//     'fields.slug': params.sprite,
+//   });
+
+//   return {
+//     props: {
+//       title: items[0].fields.title,
+//       image: items[0].fields.image,
+//     },
+//   };
+// };
+
+interface ISprite {
+    name: string;
+    faction: string;
+    moto: string;
+    primaryFunction: string;
+    altMode: string;
+    bio: any,
     image: {
-      fields: {
-        description,
+
+        description: string;
         file: {
-          url,
+          url: string;
           details: {
-            image: { width, height },
-          },
-        },
+            image: { width: number; height: number };
+          };
+        };
+    };
+}
+
+const Sprite = ({
+  name,
+  faction,
+  moto,
+  primaryFunction,
+  altMode,
+  bio,
+  image: {
+    description,
+    file: {
+      url,
+      details: {
+        image: { width, height },
       },
     },
-  } = sprite[0].fields;
-  
+  },
+}:ISprite): JSX.Element => {
   return (
     <Layout>
       <section className="w-full">
-        <h1 className="text-3xl mb-6">{spriteName}</h1>
+        <h1 className="text-3xl mb-6">{name}</h1>
         <p>{faction}</p>
         <p>{moto}</p>
         <p>{primaryFunction}</p>
@@ -43,10 +91,11 @@ const Sprite = ({sprite}) => {
           height={height}
           alt={description}
         />
+        <div className="prose">{documentToReactComponents(bio)}</div>
       </section>
     </Layout>
   );
-}
+};
 
 export default Sprite;
 
@@ -56,10 +105,12 @@ export const getStaticPaths = async () => {
   });
 
   const paths = res?.items?.flatMap(series => {
-    return series?.fields?.seriesReference?.map(sprite => {
-
+    return series?.fields?.seriesReference?.map((sprite: ISprite) => {
       return {
-        params: { slug: `${series?.fields?.slug}`, sprite: sprite?.fields?.slug },
+        params: {
+          slug: `${series?.fields?.slug}`,
+          sprite: sprite?.fields?.slug,
+        },
       };
     });
   });
@@ -70,17 +121,24 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }: IParams) => {
+  const { items: sprite } = await client.getEntries({
+    content_type: 'sprite',
+    'fields.slug': params.sprite,
+  });
 
-
-    const { items: sprite } = await client.getEntries({
-      content_type: 'sprite',
-      'fields.slug': params.sprite,
-    });
+  const { spriteName, faction, moto, primaryFunction, altMode, bio, image: {fields: image }}:any =
+    sprite[0].fields;
 
   return {
-    props: { 
-      sprite,
-     },
+    props: {
+      sprite: spriteName,
+      faction: faction,
+      moto: moto,
+      primaryFunction: primaryFunction,
+      altMode: altMode,
+      bio: bio,
+      image: image,
+    },
   };
 };

@@ -10,7 +10,6 @@ import AllSeries from '@/components/AllSeries/AllSeries';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home({ about, series }) {
-  console.log('series :>> ', series);
   return (
     <>
       <Head>
