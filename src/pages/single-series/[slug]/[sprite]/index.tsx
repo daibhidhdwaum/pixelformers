@@ -6,11 +6,11 @@ import Image from 'next/image';
 // |-- Internal Dependencies --|
 import Layout from '@/components/Layout/Layout';
 
-// |-- Internal Dependencies --|
+// |-- External Dependencies --|
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
-// |-- Contentful --|
-import { createClient } from 'contentful';
+// |-- Apis --|
+import { createContentfulClient } from '@/pages/api/contentful';
 
 // |-- Types --|
 interface IParams {
@@ -18,12 +18,6 @@ interface IParams {
     sprite: string;
   };
 }
-
-// TODO: Move this to api folder so it can be used in multiple files
-const client = createClient({
-  space: process.env.CONTENTFUL_SPACE_ID,
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-});
 
 // TODO: In the getStaticProps function, you are returning the sprite object as a prop, but you should only return the necessary fields that your component requires. This will help reduce the amount of data sent to the client, improving performance. For example, if your Sprite component only requires the title and image fields of the sprite, you can modify the getStaticProps function as follows:
 
@@ -59,6 +53,8 @@ interface ISprite {
         };
     };
 }
+
+const client = createContentfulClient();
 
 const Sprite = ({
   name,
@@ -100,6 +96,7 @@ const Sprite = ({
 export default Sprite;
 
 export const getStaticPaths = async () => {
+
   const res = await client.getEntries({
     content_type: 'series',
   });

@@ -3,11 +3,11 @@ import { createClient } from 'contentful';
 import Layout from '@/components/Layout/Layout';
 import Link from 'next/link';
 import Image from 'next/image';
-const client = createClient({
-  space: process.env.CONTENTFUL_SPACE_ID,
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-});
+import { createContentfulClient } from '@/pages/api/contentful';
 import {useRouter} from 'next/router';
+
+  const client = createContentfulClient();
+
 
 const SingleSeries = ({ series }) => {
   const router = useRouter();
@@ -103,7 +103,6 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-
   const { items } = await client.getEntries({
     content_type: 'series',
     'fields.slug': params.slug,
