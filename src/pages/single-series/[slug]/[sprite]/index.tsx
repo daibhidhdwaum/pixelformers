@@ -8,48 +8,79 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-const Sprite = () => {
+const Sprite = ({sprite}) => {
+
+  const {
+    spriteName,
+    faction,
+    moto,
+    primaryFunction,
+    altMode,
+    image: {
+      fields: {
+        description,
+        file: {
+          url,
+          details: {
+            image: { width, height },
+          },
+        },
+      },
+    },
+  } = sprite[0].fields;
+  
   return (
-    <div>
-      This is the sprite
-    </div>
-  )
+    <Layout>
+      <section className="w-full">
+        <h1 className="text-3xl mb-6">{spriteName}</h1>
+        <p>{faction}</p>
+        <p>{moto}</p>
+        <p>{primaryFunction}</p>
+        <p>{altMode}</p>
+        <Image
+          src={`https:${url}`}
+          width={width}
+          height={height}
+          alt={description}
+        />
+      </section>
+    </Layout>
+  );
 }
 
 export default Sprite;
 
 export const getStaticPaths = async () => {
-  const spriteRes = await client.getEntries({
-    content_type: 'sprite',
+  const res = await client.getEntries({
+    content_type: 'series',
   });
 
+  const paths = res?.items?.flatMap(series => {
+    return series?.fields?.seriesReference?.map(sprite => {
 
-  const paths = spriteRes?.items?.map(sprite => {
-    return {
-      params: {
-        slug: sprite?.fields?.associatedSeriesSlug,
-        sprite: sprite?.fields?.slug,
-      },
-    };
+      return {
+        params: { slug: `${series?.fields?.slug}`, sprite: sprite?.fields?.slug },
+      };
+    });
   });
 
   return {
-    paths: [],
+    paths: paths,
     fallback: false,
   };
 };
 
-export const getStaticProps = async ({params}) => {
+export const getStaticProps = async ({ params }) => {
 
-  const { items } = await client.getEntries({
-    content_type: 'sprite',
-    'fields.sprite': params.sprite,
-  });
 
+    const { items: sprite } = await client.getEntries({
+      content_type: 'sprite',
+      'fields.slug': params.sprite,
+    });
 
   return {
-    props: {   
-      sprite: items[0]
-    },
+    props: { 
+      sprite,
+     },
   };
 };
